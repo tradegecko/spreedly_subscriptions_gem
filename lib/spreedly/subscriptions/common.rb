@@ -44,5 +44,20 @@ module Spreedly
       end
     end
 
+    def self.to_xml_params(hash) # :nodoc:
+      hash.collect do |key, value|
+        tag = key.to_s.tr('_', '-')
+        result = "<#{tag}>"
+        if value.is_a?(Hash)
+          result << to_xml_params(value)
+        elsif value.is_a?(Array)
+          result << value.map { |val| to_xml_params(val) }.join("")
+        else
+          result << value.to_s
+        end
+        result << "</#{tag}>"
+        result
+      end.join('')
+    end
   end
 end

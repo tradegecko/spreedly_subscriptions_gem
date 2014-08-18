@@ -5,7 +5,7 @@ require 'yaml'
 require 'pp'
 
 if ENV["SPREEDLY_TEST"] == "REAL"
-  require 'spreedly'
+  require 'spreedly/subscriptions'
   require 'spreedly/subscriptions/test_hacks'
 else
   require 'spreedly/subscriptions/mock'
@@ -320,6 +320,15 @@ class SpreedlySubscriptionsGemTest < Test::Unit::TestCase
         assert_match(/invalid/i, ex.message)
       end
     end
+    context "xml serialization" do
+      should "serialize arrays" do
+        assert_equal(to_xml({invoice: {line_items: [{line_item: {quantity: 1}}]}}), "<invoice><line-items><line-item><quantity>1</quantity></line-item></line-items></invoice>")
+      end
+    end
+  end
+
+  def to_xml(hash)
+    Spreedly::Subscriptions.to_xml_params(hash)
   end
 
   def create_subscriber(id=(rand*100000000).to_i, email=nil, screen_name=nil)

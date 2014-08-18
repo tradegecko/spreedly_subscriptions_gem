@@ -49,20 +49,6 @@ module Spreedly
       @site_name
     end
 
-    def self.to_xml_params(hash) # :nodoc:
-      hash.collect do |key, value|
-      tag = key.to_s.tr('_', '-')
-      result = "<#{tag}>"
-      if value.is_a?(Hash)
-        result << to_xml_params(value)
-      else
-        result << value.to_s
-      end
-      result << "</#{tag}>"
-      result
-    end.join('')
-    end
-
     class Resource # :nodoc: all
       def initialize(data)
         @data = data
