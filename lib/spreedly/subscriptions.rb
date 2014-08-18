@@ -50,19 +50,20 @@ module Spreedly
     end
 
     class Resource # :nodoc: all
-      def initialize(data)
-        @data = data
+      attr_reader :attributes
+      def initialize(attributes)
+        @attributes = attributes
       end
 
       def id
-        @data["id"]
+        @attributes["id"]
       end
 
       def method_missing(method, *args, &block)
         if method.to_s =~ /\?$/
           send(method.to_s[0..-2])
-        elsif @data.include?(method.to_s)
-          @data[method.to_s]
+        elsif @attributes.include?(method.to_s)
+          @attributes[method.to_s]
         else
           super
         end
@@ -235,7 +236,7 @@ module Spreedly
 
       # Get the invoices for the subscriber
       def invoices
-        @invoices ||= @data["invoices"].collect{|i| Invoice.new(i)}
+        @invoices ||= @attributes["invoices"].collect{|i| Invoice.new(i)}
       end
 
       # Get the last successful invoice
