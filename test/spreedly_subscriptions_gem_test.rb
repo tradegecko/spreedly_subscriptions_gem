@@ -335,6 +335,14 @@ class SpreedlySubscriptionsGemTest < Test::Unit::TestCase
         assert_equal(@sub.attributes[:something], 'awesome')
       end
 
+      should "respond_to? provided attributes" do
+        assert_equal(@sub.special, 'key')
+        assert(@sub.respond_to?(:special))
+        assert_equal(@sub.something, 'awesome')
+        assert(@sub.respond_to?(:something))
+      end
+    end
+
     context "xml serialization" do
       should "serialize arrays" do
         assert_equal(to_xml({invoice: {line_items: [{line_item: {quantity: 1}}]}}), "<invoice><line-items><line-item><quantity>1</quantity></line-item></line-items></invoice>")

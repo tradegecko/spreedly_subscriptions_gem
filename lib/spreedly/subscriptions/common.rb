@@ -31,6 +31,14 @@ module Spreedly
           super
         end
       end
+
+      def respond_to_missing?(method, include_private = false)
+        if method.to_s =~ /\?$/
+          respond_to?(method.to_s[0..-2])
+        else
+          @attributes.key?(method.to_sym) || super
+        end
+      end
     end
 
     # Generates a subscribe url for the given user id and plan.
