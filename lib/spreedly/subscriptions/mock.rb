@@ -14,7 +14,7 @@ module Spreedly
       @site_name
     end
 
-    class Resource
+    class Resource < BaseResource
       def self.attributes
         @attributes ||= {}
       end
@@ -23,24 +23,9 @@ module Spreedly
         @attributes = value
       end
 
-      attr_reader :attributes
-      def initialize(params={})
-        @attributes = self.class.attributes.inject({}){|a,(k,v)| a[k.to_sym] = v.call; a}
-        params.each {|k,v| @attributes[k.to_sym] = v }
-      end
-
-      def id
-        @attributes[:id]
-      end
-
-      def method_missing(method, *args)
-        if method.to_s =~ /\?$/
-          send(method.to_s[0..-2], *args)
-        elsif @attributes.include?(method)
-          @attributes[method]
-        else
-          super
-        end
+      def initialize(attributes={})
+        default_attrs = self.class.attributes.inject({}){|a,(k,v)| a[k.to_sym] = v.call; a}
+        super(default_attrs.merge(attributes))
       end
     end
 

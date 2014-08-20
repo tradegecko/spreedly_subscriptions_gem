@@ -49,25 +49,7 @@ module Spreedly
       @site_name
     end
 
-    class Resource # :nodoc: all
-      attr_reader :attributes
-      def initialize(attributes)
-        @attributes = attributes.inject({}){|a,(k,v)| a[k.to_sym] = v; a}
-      end
-
-      def id
-        @attributes["id"]
-      end
-
-      def method_missing(method, *args, &block)
-        if method.to_s =~ /\?$/
-          send(method.to_s[0..-2])
-        elsif @attributes.include?(method.to_s)
-          @attributes[method.to_s]
-        else
-          super
-        end
-      end
+    class Resource < BaseResource
     end
 
     class Subscriber < Resource

@@ -11,6 +11,28 @@ require 'spreedly/subscriptions/version'
 module Spreedly
   module Subscriptions
 
+    class BaseResource
+      attr_reader :attributes
+
+      def initialize(attributes={})
+        @attributes = attributes.inject({}){|a,(k,v)| a[k.to_sym] = v; a}
+      end
+
+      def id
+        @attributes[:id]
+      end
+
+      def method_missing(method, *args)
+        if method.to_s =~ /\?$/
+          send(method.to_s[0..-2], *args)
+        elsif @attributes.key?(method.to_sym)
+          @attributes[method.to_sym]
+        else
+          super
+        end
+      end
+    end
+
     # Generates a subscribe url for the given user id and plan.
     # Options:
     #   :screen_name => a screen name for the user (shows up in the admin UI)
