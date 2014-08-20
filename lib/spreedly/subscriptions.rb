@@ -52,7 +52,7 @@ module Spreedly
     class Resource # :nodoc: all
       attr_reader :attributes
       def initialize(attributes)
-        @attributes = attributes
+        @attributes = attributes.inject({}){|a,(k,v)| a[k.to_sym] = v; a}
       end
 
       def id
