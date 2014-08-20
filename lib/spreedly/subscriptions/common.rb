@@ -5,7 +5,7 @@ end
 
 require 'uri'
 require 'bigdecimal'
-
+require 'active_support/hash_with_indifferent_access'
 require 'spreedly/subscriptions/version'
 
 module Spreedly
@@ -15,7 +15,7 @@ module Spreedly
       attr_reader :attributes
 
       def initialize(attributes={})
-        @attributes = attributes.inject({}){|a,(k,v)| a[k.to_sym] = v; a}
+        @attributes = ActiveSupport::HashWithIndifferentAccess.new(attributes)
       end
 
       def id

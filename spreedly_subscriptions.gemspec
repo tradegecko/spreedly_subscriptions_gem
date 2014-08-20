@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler', '~> 1.3'
   s.add_development_dependency 'rake'
   s.add_dependency "httparty"
+  s.add_dependency "activesupport"
   s.add_development_dependency "shoulda"
   s.add_development_dependency "mechanize", "~> 2.5.1"
 
