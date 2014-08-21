@@ -218,7 +218,7 @@ module Spreedly
 
       # Get the invoices for the subscriber
       def invoices
-        @invoices ||= @attributes["invoices"].collect{|i| Invoice.new(i)}
+        @invoices ||= @attributes[:invoices].collect{|i| Invoice.new(i)}
       end
 
       # Get the last successful invoice
