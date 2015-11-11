@@ -109,6 +109,11 @@ module Spreedly
         Spreedly::Subscriptions.get('/subscribers.xml')['subscribers'].collect{|data| new(data)}
       end
 
+      # Returns all transactions for the given subscriber
+      def self.transactions(id)
+        Spreedly::Subscriptions.get("/subscribers/#{id}/transactions.xml")['transactions'].collect { |data| Transaction.new(data) }
+      end
+
       # Spreedly calls your id for the user the "customer id". This
       # gives you a handy alias so you can just call it "id".
       def id
@@ -221,12 +226,20 @@ module Spreedly
         @invoices ||= @attributes[:invoices].collect{|i| Invoice.new(i)}
       end
 
+      # Get the transactions for the subscriber
+      def transactions
+        @transactions ||= self.class.transactions(id)
+      end
+
       # Get the last successful invoice
       def last_successful_invoice
         invoices.detect do |invoice|
           invoice.closed?
         end
       end
+    end
+
+    class Transaction < Resource
     end
 
     class Invoice < Resource

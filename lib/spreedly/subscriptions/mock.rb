@@ -75,6 +75,10 @@ module Spreedly
         @subscribers.values
       end
 
+      def self.transactions(id)
+        []
+      end
+
       def initialize(params={})
         super
         if !id || id == ''
@@ -151,12 +155,19 @@ module Spreedly
         @invoices
       end
 
+      def transactions
+        @transactions
+      end
+
       def last_successful_invoice
         @invoices.detect{|invoice| invoice.closed?}
       end
     end
 
     class Invoice < Resource
+    end
+
+    class Transaction < Resource
     end
 
     class SubscriptionPlan < Resource
